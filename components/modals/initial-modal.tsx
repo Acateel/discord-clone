@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -23,20 +23,26 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
 
+/**
+ * Zod form validation setup
+ */
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Server name is required.' }),
   imageUrl: z.string().min(1, { message: 'Server image is required.' }),
 })
 
-interface InitialModalProps {}
-
-const InitialModal: FC<InitialModalProps> = ({}) => {
+/**
+ * Initial component that create a new server
+ */
+const InitialModal = ({}) => {
+  // isMounted for remove hydration error
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
+  // setup form hook
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,7 +52,7 @@ const InitialModal: FC<InitialModalProps> = ({}) => {
   })
 
   const isLoading = form.formState.isSubmitting
-
+  
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values)
   }
